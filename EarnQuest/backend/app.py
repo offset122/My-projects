@@ -54,7 +54,7 @@ def health_check():
         'timestamp': datetime.utcnow().isoformat()
     })
 
-# Create database tables
+# Create database tables (for quick prototyping - use Flask-Migrate for production)
 with app.app_context():
     db.create_all()
 
