@@ -1,9 +1,10 @@
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {showMessage} from 'react-native-flash-message';
-import {API_BASE_URL} from '@env';
+import {API_BASE_URL, API_TIMEOUT} from '@env';
 
-// Get API base URL from environment or use localhost as fallback
+// Get API configuration from environment or use defaults
 const apiBaseUrl = API_BASE_URL || 'http://localhost:5000/api';
+const apiTimeout = parseInt(API_TIMEOUT || '10000', 10);
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -17,7 +18,7 @@ class ApiService {
   constructor() {
     this.api = axios.create({
       baseURL: apiBaseUrl,
-      timeout: 10000,
+      timeout: apiTimeout,
       headers: {
         'Content-Type': 'application/json',
       },

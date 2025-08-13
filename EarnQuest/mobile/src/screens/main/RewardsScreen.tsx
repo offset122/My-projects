@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   balanceContainer: {
     flexDirection: 'row',
     padding: 16,
-    gap: 12,
+    justifyContent: 'space-between',
   },
   balanceCard: {
     flex: 1,
@@ -315,6 +315,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
+    marginHorizontal: 6,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,

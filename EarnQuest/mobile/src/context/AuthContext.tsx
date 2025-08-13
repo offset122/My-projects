@@ -50,16 +50,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
       if (token) {
+        // Set token before making the API call
         apiService.setAuthToken(token);
         const response = await apiService.get('/auth/profile');
         if (response.success) {
           setUser(response.data.user);
         } else {
+          // Clear invalid token
+          apiService.setAuthToken(null);
           await AsyncStorage.removeItem('access_token');
         }
       }
     } catch (error) {
       console.error('Auth check error:', error);
+      apiService.setAuthToken(null);
       await AsyncStorage.removeItem('access_token');
     } finally {
       setIsLoading(false);

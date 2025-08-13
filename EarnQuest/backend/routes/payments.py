@@ -169,14 +169,15 @@ class PayPalIntegration:
                 'Content-Type': 'application/json'
             }
             
-            # Convert KES to USD (approximate rate)
+            # Convert KES to USD (approximate rate - should be configurable in production)
+            # Note: The original amount parameter is in KES, but PayPal requires USD
             usd_amount = round(amount / 130, 2)  # Rough KES to USD conversion
             
             payload = {
                 'sender_batch_header': {
                     'sender_batch_id': transaction_id,
                     'email_subject': 'EarnQuest Withdrawal',
-                    'email_message': 'You have received a payment from EarnQuest!'
+                    'email_message': f'You have received a payment from EarnQuest! (KES {amount:.2f} ≈ USD {usd_amount:.2f})'
                 },
                 'items': [{
                     'recipient_type': 'EMAIL',
@@ -185,7 +186,7 @@ class PayPalIntegration:
                         'currency': 'USD'
                     },
                     'receiver': email,
-                    'note': f'EarnQuest withdrawal - {transaction_id}',
+                    'note': f'EarnQuest withdrawal - KES {amount:.2f} (USD {usd_amount:.2f}) - {transaction_id}',
                     'sender_item_id': transaction_id
                 }]
             }
