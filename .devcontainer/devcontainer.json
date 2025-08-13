@@ -71,7 +71,7 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": ".devcontainer/setup.sh",
+  "postCreateCommand": "npm install -g @react-native-community/cli @expo/cli @railway/cli && .devcontainer/setup.sh",
   "remoteUser": "vscode",
   "workspaceFolder": "/workspace",
   "mounts": [

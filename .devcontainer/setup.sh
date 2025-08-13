@@ -35,8 +35,12 @@ npm install
 if [ ! -f .env ]; then
     cp .env.example .env
     # Update API_BASE_URL for Codespaces
-    sed -i 's|http://localhost:5000/api|https://$CODESPACE_NAME-5000.app.github.dev/api|g' .env
-    echo "✅ Created mobile .env file with Codespaces URL"
+    if [ -n "$CODESPACE_NAME" ]; then
+        sed -i "s|http://localhost:5000/api|https://${CODESPACE_NAME}-5000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/api|g" .env
+        echo "✅ Created mobile .env file with Codespaces URL"
+    else
+        echo "✅ Created mobile .env file (localhost for local development)"
+    fi
 fi
 
 cd ../..
@@ -68,23 +72,56 @@ cat > start-dev.sh << 'EOF'
 echo "🚀 Starting EarnQuest development environment..."
 echo "This will start both backend and mobile development servers"
 
+# Function to get the correct URLs
+get_backend_url() {
+    if [ -n "$CODESPACE_NAME" ]; then
+        echo "https://${CODESPACE_NAME}-5000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+    else
+        echo "http://localhost:5000"
+    fi
+}
+
+get_mobile_url() {
+    if [ -n "$CODESPACE_NAME" ]; then
+        echo "https://${CODESPACE_NAME}-8081.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
+    else
+        echo "http://localhost:8081"
+    fi
+}
+
 # Start backend in background
-gnome-terminal --tab --title="Backend" -- bash -c "./start-backend.sh; exec bash"
+echo "🔧 Starting Flask backend..."
+./start-backend.sh &
+BACKEND_PID=$!
 
 # Wait a moment for backend to start
+sleep 5
+
+# Start mobile development server in background
+echo "📱 Starting React Native Metro..."
+./start-mobile.sh &
+MOBILE_PID=$!
+
+# Wait a bit more for services to start
 sleep 3
 
-# Start mobile development server
-gnome-terminal --tab --title="Mobile" -- bash -c "./start-mobile.sh; exec bash"
-
-echo "✅ Development servers starting..."
-echo "📡 Backend API: https://$CODESPACE_NAME-5000.app.github.dev"
-echo "📱 Mobile Metro: https://$CODESPACE_NAME-8081.app.github.dev"
+echo ""
+echo "✅ Development servers started!"
+echo "📡 Backend API: $(get_backend_url)"
+echo "📱 Mobile Metro: $(get_mobile_url)"
 echo ""
 echo "💡 Tips:"
-echo "  - Use 'Ctrl+C' to stop servers"
-echo "  - Check the terminal tabs for logs"
-echo "  - API will be available at the backend URL above"
+echo "  - Use VS Code tasks (Ctrl+Shift+P → 'Tasks: Run Task') for better control"
+echo "  - Check terminal output for any errors"
+echo "  - Press Ctrl+C to stop this script and kill background processes"
+echo ""
+echo "🔄 Processes running:"
+echo "  Backend PID: $BACKEND_PID"
+echo "  Mobile PID: $MOBILE_PID"
+
+# Wait for user to stop
+trap 'echo "🛑 Stopping servers..."; kill $BACKEND_PID $MOBILE_PID 2>/dev/null; exit' INT
+wait
 EOF
 
 # Make scripts executable

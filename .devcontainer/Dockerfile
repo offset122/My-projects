@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
-# Install system dependencies
+# Install system dependencies (Node.js and Python are handled by devcontainer features)
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
         build-essential \
@@ -11,10 +11,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         openjdk-17-jdk \
         android-tools-adb \
         android-tools-fastboot \
-        python3-pip \
-        python3-venv \
-        nodejs \
-        npm \
         watchman \
     && apt-get autoremove -y && apt-get clean -y
 
@@ -32,20 +28,12 @@ RUN mkdir -p ${ANDROID_HOME}/cmdline-tools \
     && mv cmdline-tools latest \
     && rm commandlinetools-linux-9477386_latest.zip
 
-# Accept Android SDK licenses
-RUN yes | sdkmanager --licenses
+# Accept Android SDK licenses and install components
+RUN yes | sdkmanager --licenses \
+    && sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
-# Install Android SDK components
-RUN sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
-
-# Install React Native CLI and Expo CLI
-RUN npm install -g @react-native-community/cli expo-cli @expo/cli
-
-# Install Railway CLI
-RUN npm install -g @railway/cli
-
-# Install Python packages globally
-RUN pip3 install --upgrade pip setuptools wheel
+# Note: Node.js and Python are installed via devcontainer features
+# Install global packages after the features are set up
 
 # Create workspace directory
 RUN mkdir -p /workspace
