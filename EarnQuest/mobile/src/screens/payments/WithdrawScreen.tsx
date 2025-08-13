@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {apiService} from '../../services/apiService';
 import {useAuth} from '../../context/AuthContext';
 import {showMessage} from 'react-native-flash-message';
+import {formatCurrency} from '../../utils';
 
 interface WithdrawScreenProps {
   navigation: any;
@@ -56,9 +57,6 @@ const WithdrawScreen: React.FC<WithdrawScreenProps> = ({navigation}) => {
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return `KES ${amount.toFixed(2)}`;
-  };
 
   const validateWithdrawal = () => {
     if (!selectedMethod) {

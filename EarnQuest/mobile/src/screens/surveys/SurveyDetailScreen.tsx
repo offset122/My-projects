@@ -12,6 +12,7 @@ import {WebView} from 'react-native-webview';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {apiService} from '../../services/apiService';
 import {showMessage} from 'react-native-flash-message';
+import {formatCurrency} from '../../utils';
 
 interface SurveyDetailScreenProps {
   navigation: any;
@@ -27,9 +28,6 @@ const SurveyDetailScreen: React.FC<SurveyDetailScreenProps> = ({
   const [showWebView, setShowWebView] = useState(false);
   const [surveyUrl, setSurveyUrl] = useState('');
 
-  const formatCurrency = (amount: number) => {
-    return `KES ${amount.toFixed(2)}`;
-  };
 
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
