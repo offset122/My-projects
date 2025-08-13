@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Flask Backend",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/EarnQuest/backend/app.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/EarnQuest/backend",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1"
+      },
+      "python": "${workspaceFolder}/EarnQuest/backend/venv/bin/python"
+    },
+    {
+      "name": "React Native: Debug",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/EarnQuest/mobile",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start"]
+    }
+  ]
+}
