@@ -286,6 +286,8 @@ def withdraw_funds():
         )
         
         db.session.add(transaction)
+        # Commit the pending transaction first for audit trail
+        db.session.commit()
         
         # Process payment based on method
         if method == 'mpesa':
@@ -303,7 +305,7 @@ def withdraw_funds():
             result = paypal.send_payout(email, amount, transaction_id)
         
         if result['success']:
-            # Update transaction
+            # Update transaction to completed
             transaction.status = 'completed'
             transaction.external_reference = result.get('transaction_id')
             transaction.completed_at = datetime.utcnow()
@@ -319,7 +321,7 @@ def withdraw_funds():
                 'new_balance': user.available_balance
             }), 200
         else:
-            # Update transaction as failed
+            # Update transaction as failed (keep record for audit)
             transaction.status = 'failed'
             db.session.commit()
             

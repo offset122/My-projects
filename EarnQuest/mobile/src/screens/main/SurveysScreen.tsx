@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {apiService} from '../../services/apiService';
 import {showMessage} from 'react-native-flash-message';
+import {formatCurrency} from '../../utils';
 
 interface SurveysScreenProps {
   navigation: any;
@@ -64,9 +65,6 @@ const SurveysScreen: React.FC<SurveysScreenProps> = ({navigation}) => {
     loadSurveys();
   };
 
-  const formatCurrency = (amount: number) => {
-    return `KES ${amount.toFixed(2)}`;
-  };
 
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {

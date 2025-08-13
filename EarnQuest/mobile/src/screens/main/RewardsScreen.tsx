@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {apiService} from '../../services/apiService';
 import {useAuth} from '../../context/AuthContext';
+import {formatCurrency} from '../../utils';
 
 interface RewardsScreenProps {
   navigation: any;
@@ -95,9 +96,6 @@ const RewardsScreen: React.FC<RewardsScreenProps> = ({navigation}) => {
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return `KES ${amount.toFixed(2)}`;
-  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

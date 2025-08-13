@@ -162,7 +162,9 @@ def start_survey(survey_id):
         return jsonify({
             'message': 'Survey started successfully',
             'survey': survey.to_dict(),
-            'redirect_url': f'https://cpx-research.com/survey/{survey_id}?user_id={user_id}'
+            # TODO: Replace with actual CPX Research survey URL when API credentials are configured
+            # Real URL format: https://survey.cpxresearch.com/index.php?app_id={app_id}&ext_user_id={user_id}&survey_id={survey_id}&token={token}
+            'redirect_url': f'https://survey.cpxresearch.com/index.php?survey_id={survey_id}&user_id={user_id}'
         }), 200
         
     except Exception as e:

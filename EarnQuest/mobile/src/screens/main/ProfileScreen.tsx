@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useAuth} from '../../context/AuthContext';
 import {showMessage} from 'react-native-flash-message';
+import {formatCurrency} from '../../utils';
 
 interface ProfileScreenProps {
   navigation: any;
@@ -42,9 +43,6 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({navigation}) => {
     );
   };
 
-  const formatCurrency = (amount: number) => {
-    return `KES ${amount.toFixed(2)}`;
-  };
 
   const ProfileItem = ({
     icon,

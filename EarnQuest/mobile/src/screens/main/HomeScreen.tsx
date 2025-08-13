@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useAuth} from '../../context/AuthContext';
 import {apiService} from '../../services/apiService';
 import {showMessage} from 'react-native-flash-message';
+import {formatCurrency} from '../../utils';
 
 const {width} = Dimensions.get('window');
 
@@ -101,9 +102,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     loadDashboardData();
   };
 
-  const formatCurrency = (amount: number) => {
-    return `KES ${amount.toFixed(2)}`;
-  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
