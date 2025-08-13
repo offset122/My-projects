@@ -1,7 +1,8 @@
 import axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {showMessage} from 'react-native-flash-message';
 
-const API_BASE_URL = 'http://localhost:5000/api'; // Change this to your backend URL
+// Get API base URL from environment or use localhost as fallback
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000/api';
 
 interface ApiResponse<T = any> {
   success: boolean;

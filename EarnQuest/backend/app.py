@@ -22,14 +22,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
 
-# Initialize extensions
-db = SQLAlchemy(app)
+# Import models and initialize extensions
+from models import db, User, Survey, Reward, Transaction
+db.init_app(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
 CORS(app)
-
-# Import models and routes
-from models import User, Survey, Reward, Transaction
 from routes.auth import auth_bp
 from routes.surveys import surveys_bp
 from routes.rewards import rewards_bp
